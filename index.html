@@ -32,9 +32,9 @@
     <div class="chat-box-body">
       <div class="chat-box-overlay">   
       </div>
-      <output id="textarea" readonly class="chat-logs">
+      <div id="textarea" readonly class="chat-logs">
        
-      </output><!--chat-log -->
+      </div><!--chat-log -->
     </div>
     
     <div class="chat-input">      
@@ -56,8 +56,9 @@
 				})
 				
 				const text = await resp.text();
-				
-				document.querySelector('#textarea').value = text;
+				const div = document.createElement("div")
+        div.innerText="QoomBot: "+text;
+				document.querySelector('#textarea').appendChild(div);
 				
 			}
   </script> 
