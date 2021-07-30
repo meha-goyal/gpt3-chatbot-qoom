@@ -5,7 +5,7 @@ import os
 import openai
 app = Flask(__name__)
 
-openai.api_key = os.getenv('insert-secret-key-variable-here')
+openai.api_key = os.getenv('Insert-key-here')
 completion = openai.Completion()
 
 start_sequence = """\nQoom:"""
@@ -59,7 +59,7 @@ def root_dir():
     return os.path.abspath(os.path.dirname(__file__))
 
 
-def get_file(filename):  
+def get_file(filename): 
     try:
         src = os.path.join(root_dir(), filename)
         return open(src).read()
@@ -73,7 +73,11 @@ def qoom():
  incoming_msg = request.get_json()["question"]
  print(incoming_msg)
  chat_log = session.get("chat_log")
+ #print(chat_log)
  answer = ask(incoming_msg, chat_log)
+ #session["chat_log"] = append_interaction_to_chat_log(incoming_msg, answer, chat_log)
+ #msg = MessagingResponse()
+ #msg.message(answer)
  return answer
 
 @app.route("/", methods=['GET', 'POST'])
@@ -86,11 +90,5 @@ def style():
     content = get_file('style.css')
     return Response(content, mimetype="text/css")
 
-@app.route("/script.js", methods=['GET'])
-def scriptjs():
-    content = get_file('script.js')
-    return Response(content, mimetype="text/js")
-
 if __name__ == "__main__":
  app.run(debug=True)
-

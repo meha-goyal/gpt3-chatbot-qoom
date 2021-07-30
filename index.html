@@ -5,14 +5,11 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>QoomBot</title>
-  <script src="https://npmcdn.com/tether@1.2.4/dist/js/tether.min.js"></script>
   <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.0.0-alpha.6/css/bootstrap.min.css'>
   <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/bootstrap-material-design/4.0.2/bootstrap-material-design.css'>
   <link rel='stylesheet' href='https://fonts.googleapis.com/icon?family=Material+Icons'>
   <link rel="stylesheet" href="style.css">
-  <script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js'></script>
-  <script src='https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.0.0-alpha.6/js/bootstrap.min.js'></script>
-  <script src="script.js"></script>
+  <script type="module" src="script.js"></script>
 </head>
 
 <body>
@@ -32,9 +29,9 @@
     <div class="chat-box-body">
       <div class="chat-box-overlay">   
       </div>
-      <div id="textarea" readonly class="chat-logs">
+      <output id="textarea" readonly class="chat-logs">
        
-      </div><!--chat-log -->
+      </output><!--chat-log -->
     </div>
     
     <div class="chat-input">      
@@ -43,7 +40,9 @@
     </div>
   </div>
   
-
+  
+  <script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js'></script>
+  <script src='https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.0.0-alpha.6/js/bootstrap.min.js'></script>
   <script>
     async function send() {
 				
@@ -56,12 +55,57 @@
 				})
 				
 				const text = await resp.text();
-				const div = document.createElement("div")
-        div.innerText="QoomBot: "+text;
-				document.querySelector('#textarea').appendChild(div);
+				
+				document.querySelector('#textarea').value = text;
 				
 			}
   </script> 
   
 </body>
 </html>
+
+<!--
+
+<!DOCTYPE html>
+<html lang="en" >
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>QoomBot</title>
+  <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.0.0-alpha.6/css/bootstrap.min.css'>
+  <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/bootstrap-material-design/4.0.2/bootstrap-material-design.css'>
+  <link rel='stylesheet' href='https://fonts.googleapis.com/icon?family=Material+Icons'>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div>
+    <input type="text" id="chat-input" name="question" placeholder="How can we help you?"/>        
+    <button type="submit" class="chat-submit" id="chat-submit" value="request" onclick='send()'><i class="material-icons">send</i></button>
+  </div>   
+  <output id="textarea" class="chat-box" name="response" id="reponse"></output>
+  
+  <script>
+    async function send() {
+				
+				const input = document.querySelector('input').value;
+				
+				const resp = await fetch('/qoombot/answer', {   // https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API/Using_Fetch
+					body: JSON.stringify({question: input}),  // Converting data into a string to send to server cols="15" rows="5"
+					headers: { 'Content-Type': 'application/json'},
+					method: 'POST'
+				})
+				
+				const text = await resp.text();
+				
+				document.querySelector('#textarea').value = text;
+				
+			}
+  </script> 
+
+</body>
+</html>
+
+
+
+-->
