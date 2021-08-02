@@ -1,22 +1,3 @@
-<style>
-	img {
-		box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
-		display:block;
-		margin: 1rem auto 3rem;
-	}
-	a.back2top {
-		display: block;
-		font-size: 14px;
-		text-align: right;
-		text-decoration: none;
-		opacity: 0.7;
-		cursor: pointer;
-	}
-	a.back2top:hover {
-		text-decoration: underline;
-	}
-</style>
-
 # Build an AI Chatbot (Editing in Progress)
 
 ## Introduction
