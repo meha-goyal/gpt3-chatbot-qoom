@@ -17,7 +17,7 @@
 	}
 </style>
 
-# Build an AI Chatbot 
+# Build an AI Chatbot (Editing in Progress)
 
 ## Introduction
 <style>
@@ -76,19 +76,15 @@
 
 ## Technologies you will Learn:
 1. Submitting data and recieving generated responses using the `OPENAI` API
-2. Using `JavaScript` functions to send and recieve data from the page to the API
+2. Using `JavaScript` functions and `Flask` to send and recieve data from the page to the API
 3. The `HTML/CSS` necessary to create a popup chatbot page.
 
 ## Strategy
-> 1. <a href="#">Create a basic chatbot page</a>
-> 2. <a href="#">Access `API` through Python</a> 
+> 1. <a href="#">Create a basic input and output on chatbot page</a>
+> 2. <a href="#">Access API using Python</a> 
 > 3. <a href="#">Train AI model on user data</a> 
 > 4. <a href="#">Connect API functionality to the chatbot page</a> 
-> 5. <a href="#">Design `chatbot` popup page</a>
-
-## Video List
-
-You can find <a href="video.md" target="_blank">tutorial videos here</a>
+> 5. <a href="#">Design chatbot popup page</a>
 
 ## Need Help?
 
@@ -96,15 +92,11 @@ Get help from the Qoom team and our community members. <a href="https://discord.
 
 ---
 
-<h2 id="landing">1. Create a company landing page</h2>
+<h2 id="landing">1. Create basic page to display input and output</h2>
 
-It is hard to create a landing page without a concept and a design. The concept I came up with is a ficticious company called `Doggo` that created an AI powered robot that follows your dog and eliminates its feces. Lots of company sites have a picture or drawing that covers the entire screen to draw the user's attention. I will follow this design. Here is what I came up with:
+It is hard to build the chatbot and test its functionality without starting with a basic page for sending inputs and recieving outputs.
 
-![](assets/doggo.png)
-
-You can free images at <a href="https://unsplash.com" target="_blank">https://unsplash.com</a>  
-
-So lets now implement this design using the following strategy:
+Let's now implement this design using the following strategy:
 1. Define the structure of the design using `HTML`
 2. Make it look like what we want using `CSS`
 
@@ -113,198 +105,28 @@ If you haven't already, create an account on <a href="https://www.qoom.io" targe
 ```html
 <body>
 	
-	<nav>WHERE OUR LOG IN CONTROLS WILL GO</nav>
-	
-	<main>WHERE OUR IMAGE IS DISPLAY WITH THE TEXT</main>
-	
-	<footer>OUR COMPANY NAME</footer>
+	<div class="chat-input">      
+        <input type="text" name="question" placeholder="How can we help you?"/>
+      <button type="submit" onclick='send()'>Submit</button>
+    </div>
+    
+    <div id="textarea" readonly class="chat-logs">
+     </div>
 
 </body>
 
 ```
-Now lets go into each element and define what goes into them. Starting with the `<nav>` element.
+The first div holds an input element, and a button. The input has the placeholder "How can we help you?" in order to prompt the user to ask a question. The button, with type submit and the corressponding function send, will send the user's request to the back end later on.
 
-```html
-<nav>
-	<!-- USERS WHO ARE NOT LOGGED WILL SEE THIS -->
-	{{^private}}
-		<a href='login'>Login</a>
-		<a href='signup'>Signup</a>
-	{{/private}}
-	
-	<!-- USERS WHO ARE LOGGED WILL SEE THIS -->
-	{{#private}}
-		<a href='account'>
-			<img src='{{avatar}}'>
-		</a>
-		<a onclick='logout()'>Logout</a>
-	{{/private}}
-</nav>
-```
-We are using a templating engine called `Mustache` to selectively hide and show elements. You can learn more <a href="http://mustache.github.io/mustache.5.html" target="_blank">here</a>. The `private` flag is native to **qoom.io**.
+The second div with id="textarea" is where the output will be printed.
 
-
-Next lets create the html for the `main` section:
-
-```html
-<main>
-	<!-- THE WHITE BOX IN OUR DESIGN -->
-	<div>
-		<!-- THE BIG TEXT IN OUR DESIGN -->
-		<h1>
-			Doggo Pooper Eliminater
-		</h1>
-		<!-- THE SMALLER TEXT IN OUR DESIGN -->
-		<h2>
-			An AI powered robot that follows your dog and collects its waste.
-		</h2>
-	</div>
-</main>
-
-```
-
-And finally the footer:
-```html
-<footer>
-	© 2021 The Doggo Group
-</footer>
-```
-
-Now onto the `<head>` element. Here we give the browser additional instructions as described in the comments:
-
-```html
-<head>
-	<!-- MAKE SURE OUR SITE LOOKS GOOD ON MOBILE -->
-	<meta name="viewport" content="width=device-width, initial-scale=0.5">
-	
-	<!-- THIS TELLS OUR BROWSER TO GRAB THE CSS FROM THIS FILE -->
-	<link rel="stylesheet" href="styles.css">
-	
-	<!-- THIS TELLS OUR BROWSER TO GRAB THE JAVSCRIPT FROM THIS FILE -->
-	<script type="module" src="script.js"></script>
-	
-	<!-- THIS ADDS A DOG HEAD TO OUR TAB (aka favicon) -->
-	<link rel="shortcut icon" type="image/jpg" href="pug.png"/>
-	
-	<!-- THIS PUTS TEXT INTO THE TAB -->
-	<title>Sign Up!</title>
-</head>
-
-```
-
-Our site now has all the structure that our design has:
-![](assets/doggo_no_html.png)
-
-
-Now we are ready to style the page. Here is the `CSS`:
-
-```css
-
-/* FEEL FREE TO GO TO fonts.google.com TO CHOOSE YOUR OWN FONT */
-@import url('https://fonts.googleapis.com/css2?family=McLaren&display=swap');
-
-body {
-	margin:0;
-	width:100vw;
-	height:100vh;
-	overflow:hidden;
-	font-family: 'McLaren', cursive;
-}
-
-nav {
-	position:absolute;
-	top:0;
-	right:0;
-	display:flex;
-	flex-direction:row-reverse;
-	width:40vw;
-	height:50px;
-	align-items:center;
-	justify-content:flex-start;
-	gap: 20px;
-	margin-right:20px;
-}
-
-nav a {
-	color:white;
-	text-decoration:none;
-	padding:0.5em;
-	cursor:pointer;
-}
-
-nav a img {
-	width:32px;
-	height:32px;
-	border-radius:50%;
-	object-fit: contains;
-	background-color:white;
-}
-
-nav a:hover {
-	background-color:#ffffff75;
-	color:black;
-	border-radius:3px;
-}
-
-main {
-	background-image:url(dogwalking.jpg);
-	background-size:cover;
-	background-position:50% 50%;
-	width:100vw;
-	height:100vh;
-	display:flex;
-	flex-direction:column;
-	align-items:center;
-	justify-content:center;
-}
-
-main div {
-	margin:0 1em;
-	text-align:center;
-	background-color: #ffffff75;
-	border-radius:10px;	
-	padding:20px;
-	box-sizing:border-box;
-}
-
-main div > img {
-	width:200px;
-	height:200px;
-	object-fit: contains;
-}
-
-main h1 {
-	font-size:96px;
-	color:#003200;
-}
-
-main h2 {
-	font-size:36px;
-}
-
-
-footer {
-	position:absolute;
-	bottom:0;
-	left:0;
-	height:50px;
-	width:100vw;
-	display:flex;
-	align-items:center;
-	justify-content:center;
-	color:white;
-}
-```
-Our site now looks like what we created above.
-
-<a href="#top" class="back2top">Back To Top</a>
 
 ---
 
 
-<h2 id="signup">2. Create <code>signup</code> page</h2>
+<h2 id="signup">2. Use API to begin chatbot</h2>
 
-All the remaining pages we create will use the same `CSS` and `JS` file. That way we can have common design and a set of function that any page can use.
+Most of the following work will be done in one python file (app.py). 
 
 So create a new page called `signup.html` and replace the `<head>` element with that that is inside of `index.html`:
 
@@ -526,7 +348,7 @@ Now we are done!
 
 ## Challenges:
 
-> 1. Redirect the user, that has logged in, to the `account` page if they try to access the `signup` or `login` pages.
+> 1. Add profile pictures for both the user and qoombot!
 
 > 2. Style the buttons differently on mobile. (Hint: Research `CSS media queries`)
 
