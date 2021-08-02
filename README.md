@@ -1,55 +1,6 @@
 # Build an AI Chatbot (Editing in Progress)
 
 ## Introduction
-<style>
-	#actions {
-		display: flex;
-		gap: 16px;
-		flex-flow: row wrap;
-		margin-top: 16px;
-	}
-	#actions > a {
-		
-		flex: 0 0 auto;
-		background-color: #0067f4;
-		color: #ffffff;
-		padding: 12px 16px;
-		border-radius: 4px;
-		
-		text-decoration: none;
-		font-weight: 500;
-		
-		display: flex;
-		gap: 8px;
-		align-items: center;
-	}
-	#actions > a:hover {
-		background-color: #003986;
-	}
-	#actions > a > img {
-		box-shadow: none;
-		display: inline-block;
-		width: 20px;
-		height: 20px;
-		margin: 0;
-		
-		-webkit-filter: invert(1);
-		filter: invert(1);
-	}
-	#actions > a > img
-</style>
-<div id="actions">
-	<a href="/~/projects/AI_Chatbot" target="_blank">
-		<img src="/libs/icons/play.svg"> View Project
-	</a>
-	<a href="/~/edit/projects/AI_Chatbot" target="_blank">
-		<img src="/libs/icons/coding.svg">View Code
-	</a>
-	<a href="https://www.qoom.io/subscribe/choosecodingspace?sourceDomain=app.qoom.io&projectPath=%2Fprojects%2Flogin-system" target="_blank">
-		<img src="/libs/icons/clone.svg">Clone Project
-	</a>
-</div>
-
 
 ## Goals:
 1. Create an **AI Chatbot** that responds to user questions.
