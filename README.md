@@ -1,83 +1,16 @@
-<style>
-	img {
-		box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
-		display:block;
-		margin: 1rem auto 3rem;
-	}
-	a.back2top {
-		display: block;
-		font-size: 14px;
-		text-align: right;
-		text-decoration: none;
-		opacity: 0.7;
-		cursor: pointer;
-	}
-	a.back2top:hover {
-		text-decoration: underline;
-	}
-</style>
-
 # Create an AI Chatbot
 
 ## Introduction
-<style>
-	#actions {
-		display: flex;
-		gap: 16px;
-		flex-flow: row wrap;
-		margin-top: 16px;
-	}
-	#actions > a {
-		
-		flex: 0 0 auto;
-		background-color: #0067f4;
-		color: #ffffff;
-		padding: 12px 16px;
-		border-radius: 4px;
-		
-		text-decoration: none;
-		font-weight: 500;
-		
-		display: flex;
-		gap: 8px;
-		align-items: center;
-	}
-	#actions > a:hover {
-		background-color: #003986;
-	}
-	#actions > a > img {
-		box-shadow: none;
-		display: inline-block;
-		width: 20px;
-		height: 20px;
-		margin: 0;
-		
-		-webkit-filter: invert(1);
-		filter: invert(1);
-	}
-	#actions > a > img
-</style>
-<div id="actions">
-	<a href="/~/projects/AI_Chatbot" target="_blank">
-		<img src="/libs/icons/play.svg"> View Project
-	</a>
-	<a href="/~/edit/projects/AI_Chatbot" target="_blank">
-		<img src="/libs/icons/coding.svg">View Code
-	</a>
-	<a href="https://www.qoom.io/subscribe/choosecodingspace?sourceDomain=app.qoom.io&projectPath=%2Fprojects%2Flogin-system" target="_blank">
-		<img src="/libs/icons/clone.svg">Clone Project
-	</a>
-</div>
-
 
 ## Goals:
-1. Use Python and JavaScript to create an **AI Chatbot** that responds to user questions.
-2. Design a page that displays the **popup chatbot**
+>1. Develop Python code to implement the **OpenAI API** that recieves user questions and develops a response.
+>2. Use **Flask and JavaScript** to communicate data between the frontend and backend code.
+>3. Design a page that displays the **popup chatbot** and allows users to open and close the popup.
 
 ## Technologies you will Learn:
-1. Submitting data and recieving generated responses using the `OPENAI` API
-2. Using `JavaScript` functions and `Flask` to send and recieve data from the page to the API
-3. The `HTML/CSS` necessary to create a popup chatbot page.
+>1. Submitting data and recieving generated responses using the `OPENAI` API
+>2. Using `JavaScript` functions and `Flask` to send and recieve data from the page to the API
+>3. The `HTML/CSS` necessary to create a popup chatbot page.
 
 ## Strategy
 > 1. <a href="#top">Create a basic input and output on chatbot page</a>
@@ -120,7 +53,7 @@ The first div holds an input element, and a button. The input has the placeholde
 
 <h2 id="pythonapi">2. Use Python and Open AI API to develop the backend chatbot</h2>
 
-Most of the following work will be done in one python file (app.py). 
+Most of the following work will be done in a single, new python file called app.py.
 
 Here is the setup for the python file and API we will be using: 
 ```python
@@ -134,9 +67,9 @@ app = Flask(__name__)
 openai.api_key = os.getenv('Your-Key-Variable')
 completion = openai.Completion()
 ```
-You will want to save your secret key as an env variable, which you will put in the place of "Your-Key-Variable"
+You will want to save your secret key as an env variable, whose name you will put in the place of "Your-Key-Variable"
 
-Now, we will be adding in some training data of our own! Separate each question and answer set with a new line to indicate where each conversation ends.
+Now, we will be adding in some training data of our own! Separate each question and answer set with a new line to indicate where each conversation ends. The start sequence and restart sequence labeled at the beginning help the API understand when to start responding and when a user has restarted the conversation.
 
 ``` python
 start_sequence = """\nQoom:"""
@@ -163,7 +96,7 @@ session_prompt = """Welcome! I am QoomBot, Qoom's very own AI based chatbot. How
 	You: What should I do first?
 	Qoom: You should start by creating an account. You can access tutorials, your coding space, and new opportunities. 
 
-	You:"""
+	You:""" #continue adding questions and answers here
 
 stop = "\n"
 
@@ -202,11 +135,11 @@ def append_interaction_to_chat_log(question, answer, chat_log=None):
         chat_log = session_prompt 
     return f"{chat_log}{restart_sequence} {question}{start_sequence}{answer}"
 
-def root_dir():  # pragma: no cover
+def root_dir():  
     return os.path.abspath(os.path.dirname(__file__))
 
 
-def get_file(filename):  # pragma: no cover
+def get_file(filename):  
     try:
         src = os.path.join(root_dir(), filename)
         return open(src).read()
@@ -214,7 +147,7 @@ def get_file(filename):  # pragma: no cover
         return str(exc)
 ```
 
-We now need to create routes in flask to link our python input and output to our html page. 
+We now need to create routes in flask to link our python input and output to our html page. Each route has a return value which is either a value or a Response function.
 
 ```python
 app.config["SECRET_KEY"] = "generate1241235jasdaRandomstring"
@@ -242,12 +175,13 @@ def scriptjs():
 if __name__ == "__main__":
  app.run(debug=True)
 ```
-You can replace the string saved in secret key with any random string you'd like!
-We made a route for each of the files of code we've written in order to make sure they are included in our project. If you make any more files, add a route for them too!
+You can replace the string saved in ["Secret_Key"] with any random string you'd like! If your chatbot starts acting wonky, try replacing the string.
+
+We just made a route for each of the files of code we've written in order to make sure they are included in our project. If you make any more files, add a route for them too!
 
 <h2 id="javascriptconnect">3. Connect API functionality to the chatbot page with JavaScript</h2>
 
-Now, let's work on JavaScript! We will add some JavaScript in <script></script> tags on our main html page in order to send and recieve information from the API. Place your script tags inside the html body tags.
+Now, let's work on JavaScript! We will add some JavaScript inside ```<script></script>``` tags on our main html page in order to send and recieve information from the API. Place your script tags inside the html body tags.
 
 ```js
 <script>
@@ -275,13 +209,15 @@ Now, let's work on JavaScript! We will add some JavaScript in <script></script> 
 	}
   </script> 
 ```
+A link with more information and details on async functions is included at the bottom of the page!
+
 <a href="#top" class="back2top">Back To Top</a>
 
 ---
 
 <h2 id="cssdesign">4.Design Chatbot with CSS</h2>
 
-Now that all the chatbot functionality is complete, let's start designing the chatbot! We first need to include some libraries into our html. Add the following code to the bottom of your head element in the html file:
+Now that all the chatbot functionality is complete, let's start designing the chatbot! We first need to include some libraries into our html. Add the following code to the bottom of your head element in the html file. Be sure to add the links in this order, or you may end up with loading errors!
 
 ```html
   <script src="https://npmcdn.com/tether@1.2.4/dist/js/tether.min.js"></script>
@@ -294,10 +230,10 @@ Now that all the chatbot functionality is complete, let's start designing the ch
   <script src="script.js"></script>
 
 ```
-After we include this links, let's add a more advanced html structure to our page. Replace the previous content of the body (leave the script tags as is!) with the following code:
+After we include this links, let's add a more advanced html structure to our page. Replace the previous content of the body (leave the script tags as is) with the following code:
 
 ```html
-  <div id="chat-circle" class="btn btn-raised">
+  <div id="chat-circle">
         <div id="chat-overlay"></div>
 		    <i class="material-icons">question_answer</i>
 	</div>
@@ -327,7 +263,7 @@ After we include this links, let's add a more advanced html structure to our pag
   </div>
 
 ```
-Let's make a JavaScript File so that when the button is clicked, the chatbox pops up! We will call it script.js.
+Let's make a JavaScript File so that when the button is clicked, the chatbox pops up! We will name the file script.js.
 
 ```javascript
 $(function() {
@@ -350,8 +286,7 @@ $(function() {
 })
 
 ```
-
-Finally, let's add some CSS! Go step by step for each div that we outlined to add the following design features:
+Finally, let's add some CSS! Go step by step for each div that we outlined. Here's the code for the first div, which includes the initial circle button:
 
 ```css
 html, body {
@@ -373,19 +308,13 @@ html, body {
   box-shadow: 0px 3px 16px 0px rgba(0, 0, 0, 0.6), 0 3px 1px -2px rgba(0, 0, 0, 0.2), 0 1px 5px 0 rgba(0, 0, 0, 0.12);
 }
 
-.btn #my-btn {
-    background: white;
-    padding-top: 13px;
-    padding-bottom: 12px;
-    border-radius: 45px;
-    padding-right: 40px;
-    padding-left: 40px;
-    color: #5865C3;
-}
 ```
-Great! We've completed the basic design for the first div, which represents the circle button users will click to access the chatbot. 
+We set cursor to pointer in order to indicate when to the user that they are hovering over a button. The box shadow also helps draw attention to the button in the corner.
 
-Let's work on the second div now, which the header, body, and input.
+Great! We've completed the basic design for the circle button users will click to access the chatbot. Let's break down the second div now, which is the header, body, and input.
+
+First, let's design the header and the response to our JavaScript toggle function.
+
 ```css
 
 .chat-box-header {
@@ -404,6 +333,10 @@ Let's work on the second div now, which the header, body, and input.
   margin-right:15px;
   cursor:pointer;
 }
+```
+Next, we want to design the body of the chatbot. This includes the chatlogs, which stores the previous values in the div and helps us scroll through the responses.
+
+```css
 
 #chat-overlay {
     background: rgba(255,255,255,0.1);
@@ -448,43 +381,7 @@ Let's work on the second div now, which the header, body, and input.
   position: absolute;
   z-index: -1;   
 }
-#chat-input {
-  background: #f4f7f9;
-  width:100%; 
-  position:relative;
-  height:47px;  
-  padding-top:10px;
-  padding-right:50px;
-  padding-bottom:10px;
-  padding-left:15px;
-  border:none;
-  resize:none;
-  outline:none;
-  border:1px solid #ccc;
-  color:#888;
-  border-top:none;
-  border-bottom-right-radius:5px;
-  border-bottom-left-radius:5px;
-  overflow:hidden;  
-}
-.chat-input > form {
-    margin-bottom: 0;
-}
-#chat-input::-webkit-input-placeholder { 
-  color: #ccc;
-}
-.chat-submit {  
-  position:absolute;
-  bottom:3px;
-  right:10px;
-  background: transparent;
-  box-shadow:none;
-  border:none;
-  border-radius:50%;
-  color:#5A5EB9;
-  width:35px;
-  height:35px;  
-}
+
 .chat-logs {
   padding:15px; 
   height:370px;
@@ -514,21 +411,58 @@ Let's work on the second div now, which the header, body, and input.
         height:40vh;
     }
 }
-
-
 ```
-Add in tips on why we inlcuded specific attributes
+The overflow-y: scroll element allows users to scroll through past chatlogs even if they go past the size of the chatbot window.
+
+Finally, let's design the input div! We will design both the input box and the submit button.
+
+```css
+#chat-input {
+  background: #f4f7f9;
+  width:100%; 
+  position:relative;
+  height:47px;  
+  padding: 10px, 50px, 10px, 20px;
+  resize:none;
+  outline:none;
+  border:1px solid #ccc;
+  color:#888;
+  border-top:none;
+  border-bottom-right-radius:5px;
+  border-bottom-left-radius:5px;
+  overflow:hidden;  
+}
+.chat-input > form {
+    margin-bottom: 0;
+}
+#chat-input::-webkit-input-placeholder { 
+  color: #ccc;
+}
+.chat-submit {  
+  position:absolute;
+  bottom:3px;
+  right:10px;
+  background: transparent;
+  box-shadow:none;
+  border:none;
+  border-radius:50%;
+  color:#5A5EB9;
+  width:35px;
+  height:35px;  
+}
+```
+The chatbox-body:after indicates the new design of the chatbox once the chatbot circle is clicked. Beforehand, the chatbox is hidden. 
 
 Now we are done!
 
 ---
 
 ## Resources:
-> JavaScript Async Functions/Fetch API: https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API/Using_Fetch
-> CSS Designs: 
+>1.  <a href="https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API/Using_Fetch">JavaScript Async Functions/Fetch API</a> 
+>2. <a href="https://codepen.io/shivapandey/pen/dWdRYM">CSS Design</a>
 
 ## Challenges:
 
-> 1. Add profile pictures for both the user and qoombot!
-
-> 2. Add a feature using the chatlog function in python ()
+> 1. Add profile pictures for both the user and qoombot! Try and get each response to stick to the correct side of the app window. 
+> 2. Add a feature using the chatlog function in python (hint: research rendering pages instead of returning values)
+>3. Add the question-answer data in a text file, add more data, and try opening the file through python.
