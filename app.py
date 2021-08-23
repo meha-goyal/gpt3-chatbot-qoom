@@ -5,7 +5,7 @@ import os
 import openai
 app = Flask(__name__)
 
-openai.api_key = os.getenv('Insert-key-here')
+openai.api_key = os.getenv('OPENAI_API_KEY')
 completion = openai.Completion()
 
 start_sequence = """\nQoom:"""
@@ -55,11 +55,11 @@ def append_interaction_to_chat_log(question, answer, chat_log=None):
         chat_log = session_prompt 
     return f"{chat_log}{restart_sequence} {question}{start_sequence}{answer}"
 
-def root_dir(): 
+def root_dir():
     return os.path.abspath(os.path.dirname(__file__))
 
 
-def get_file(filename): 
+def get_file(filename):
     try:
         src = os.path.join(root_dir(), filename)
         return open(src).read()
@@ -67,13 +67,14 @@ def get_file(filename):
         return str(exc)
 
 
-app.config["SECRET_KEY"] = "insert-random-string-here"
+app.config["SECRET_KEY"] = "generate1241235jasdaRandomstring"
 @app.route("/qoombot/answer", methods=["POST"])
 def qoom():
  incoming_msg = request.get_json()["question"]
  print(incoming_msg)
  chat_log = session.get("chat_log")
  answer = ask(incoming_msg, chat_log)
+
  return answer
 
 @app.route("/", methods=['GET', 'POST'])
@@ -90,6 +91,16 @@ def style():
 def scriptjs():
     content = get_file('script.js')
     return Response(content, mimetype="text/js")
+#
+#@app.route("/user", methods=['GET'])
+#def user():
+#    content = get_file('static/user.png')
+#    return Response(content, mimetype="image/png")
 
+#@app.route("/qoomlogo", methods=['GET'])
+#def qoomlogo():
+#    content = get_file('static/qoomlogo.jpeg')
+#    return Response(content, mimetype="image/jpeg")
+#
 if __name__ == "__main__":
  app.run(debug=True)
